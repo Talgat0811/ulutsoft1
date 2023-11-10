@@ -32,3 +32,11 @@ class Audios(models.Model):
 
     class Meta:
         ordering = ['audio_file']
+
+
+class Texts(models.Model):
+    input_text = models.TextField(verbose_name="Входной текст")
+    output_text = models.TextField(verbose_name="Выходной текст")
+
+    def __str__(self):
+        return f"Input: {self.input_text}, Output: {self.output_text}"
