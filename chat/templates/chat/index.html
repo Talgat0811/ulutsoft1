@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма</title>
+
+    <style>
+        /* Стили остаются неизменными */
+    </style>
+</head>
+<body>
+
+<form id="myForm">
+    <label for="textInput">Введите текст:</label>
+    <input type="text" id="textInput" name="textInput">
+    <button type="button" onclick="saveText()">Сохранить</button>
+</form>
+
+<!-- Элемент для отображения сохраненного текста -->
+<p id="displayText"></p>
+
+<script>
+    let storedText;
+
+    function saveText() {
+        const inputElement = document.getElementById('textInput');
+        storedText = inputElement.value;
+
+        // Отправка текста на сервер
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/save_text_to_database/", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+        xhr.onload = function () {
+            if (xhr.status == 200) {
+                console.log('Текст успешно сохранен в базе данных:', storedText);
+            } else {
+                console.error('Ошибка при сохранении текста в базе данных:', xhr.statusText);
+            }
+        };
+
+        xhr.send(JSON.stringify({ text: storedText }));
+
+        // Отображение текста на веб-странице
+        const displayTextElement = document.getElementById('displayText');
+        displayTextElement.innerText = `Сохраненный текст: ${storedText}`;
+    }
+</script>
+
+</body>
+</html>
